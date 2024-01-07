@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="io.github.dimous.tsundoku.presentation.controller.ConfigController" spacing="5"
+      alignment="CENTER_RIGHT">
+    <padding>
+        <Insets top="10" right="10" bottom="10" left="10"/>
+    </padding>
+
+    <TextField fx:id="__text_field_dialect" promptText="%ui.prompt.dialect"/>
+    <TextField fx:id="__text_field_url" promptText="%ui.prompt.url"/>
+    <TextField fx:id="__text_field_user" promptText="%ui.prompt.user"/>
+    <TextField fx:id="__text_field_password" promptText="%ui.prompt.password"/>
+
+    <TextField fx:id="__text_field_base_path" promptText="%ui.prompt.base_path"/>
+    <TextField fx:id="__text_field_extensions" promptText="%ui.prompt.extensions"/>
+
+    <Region VBox.vgrow="ALWAYS"/>
+
+    <Button fx:id="__button_save" text="%ui.button.save" onAction="#onSaveButtonClick"/>
+</VBox>

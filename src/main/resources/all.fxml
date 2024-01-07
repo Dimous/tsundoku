@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.controlsfx.control.StatusBar?>
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="io.github.dimous.tsundoku.presentation.controller.AllController" fx:id="__v_box_root">
+    <HBox spacing="10">
+        <padding>
+            <Insets top="10" right="10" bottom="10" left="10"/>
+        </padding>
+
+        <Button fx:id="__button_index" text="%ui.button.index" onAction="#onIndexButtonClick"/>
+
+        <Separator orientation="VERTICAL"/>
+
+        <TextField fx:id="__text_field_keyword" promptText="%ui.prompt.search" HBox.hgrow="ALWAYS"/>
+        <Button fx:id="__button_search" text="%ui.button.search" onAction="#onSearchButtonClick"/>
+    </HBox>
+
+    <StackPane VBox.vgrow="ALWAYS">
+        <TreeView fx:id="__tree_view"/>
+
+        <ProgressIndicator fx:id="__progress_indicator"/>
+    </StackPane>
+
+    <StatusBar fx:id="__status_bar">
+        <rightItems>
+            <Button fx:id="__button_settings" text="%ui.button.settings" onAction="#onSettingsButtonClick"/>
+        </rightItems>
+    </StatusBar>
+</VBox>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.layout.StackPane?>
+<StackPane xmlns:fx="http://javafx.com/fxml"
+           fx:controller="io.github.dimous.tsundoku.presentation.controller.DuplicatesController">
+    <TreeView fx:id="__tree_view"/>
+
+    <ProgressIndicator fx:id="__progress_indicator"/>
+</StackPane>
