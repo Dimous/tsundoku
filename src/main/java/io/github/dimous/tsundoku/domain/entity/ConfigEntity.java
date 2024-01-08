@@ -9,6 +9,7 @@ import java.util.Set;
 public final class ConfigEntity {
     private Set<String>
         __set_extensions;
+
     private String
         __string_url,
         __string_user,

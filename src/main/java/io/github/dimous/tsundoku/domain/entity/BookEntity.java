@@ -30,7 +30,6 @@ public final class BookEntity {
     private long
         __long_id,
         __long_size;
-    //---
 
     private String
         __string_path,
@@ -38,11 +37,9 @@ public final class BookEntity {
         __string_hash,
         __string_content,
         __string_extension;
-    //---
 
     private Set<NumberEntity>
         __set_numbers;
-    //---
 
     // name должно хранить название книги из базы isbn, но до пост-обработки будет храниться имя файла
     // https://isbnsearch.org/isbn/..., https://isbndb.com/book/...
