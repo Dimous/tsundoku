@@ -14,6 +14,7 @@ import java.util.ResourceBundle;
 public final class DuplicatesTreeCell extends TreeCell<DuplicatesTreeNodeDTO> {
     private final Util
         __util;
+
     private final MenuItem
         __menu_item_open,
         __menu_item_delete;

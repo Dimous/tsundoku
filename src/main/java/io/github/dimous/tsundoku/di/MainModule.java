@@ -24,12 +24,12 @@ public final class MainModule extends AbstractModule {
         this.bind(IdenticalsTreeCell.class);
         this.bind(DuplicatesTreeCell.class);
         this.bind(Util.class).in(Scopes.SINGLETON);
+        this.bind(ResourceBundle.class).toInstance(ResourceBundle.getBundle("strings"));
         this.bind(IConfigService.class).to(INIConfigService.class).in(Scopes.SINGLETON);
         this.bind(IBookInteractor.class).to(DefaultBookInteractor.class).in(Scopes.SINGLETON);
         this.bind(IBookDataSource.class).to(DefaultBookDataSource.class).in(Scopes.SINGLETON);
         this.bind(IFileDataSource.class).to(DefaultFileDataSource.class).in(Scopes.SINGLETON);
         this.bind(IBookRepository.class).to(DefaultBookRepository.class).in(Scopes.SINGLETON);
-        this.bind(ResourceBundle.class).toInstance(ResourceBundle.getBundle("strings"));
         this.bind(IConfigRepository.class).to(DefaultConfigRepository.class).in(Scopes.SINGLETON);
         this.bind(IConfigDataSource.class).to(DefaultConfigDataSource.class).in(Scopes.SINGLETON);
         this.bind(IConfigInteractor.class).to(DefaultConfigInteractor.class).in(Scopes.SINGLETON);

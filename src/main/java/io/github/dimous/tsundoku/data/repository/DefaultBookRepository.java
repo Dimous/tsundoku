@@ -33,9 +33,11 @@ public final class DefaultBookRepository implements IBookRepository {
     @Inject
     private IBookDataSource
         __book_data_source;
+
     @Inject
     private IFileDataSource
         __file_data_source;
+
     @Inject
     private IISBNRetrieverService
         __i_s_b_n_retriever_service;

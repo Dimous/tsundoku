@@ -13,6 +13,7 @@ import java.util.ResourceBundle;
 public final class IdenticalsTreeCell extends TreeCell<IdenticalsTreeNodeDTO> {
     private final Util
         __util;
+
     private final MenuItem
         __menu_item_delete;
 
@@ -33,6 +34,7 @@ public final class IdenticalsTreeCell extends TreeCell<IdenticalsTreeNodeDTO> {
 
         this.setContextMenu(__context_menu);
     }
+    //---
 
     @Override
     protected void updateItem(final IdenticalsTreeNodeDTO __identicals_tree_node_d_t_o, final boolean __boolean_is_empty) {

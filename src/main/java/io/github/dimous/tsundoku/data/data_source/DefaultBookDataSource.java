@@ -19,6 +19,7 @@ public final class DefaultBookDataSource implements IBookDataSource {
     @Inject
     private IFileDataSource
         __file_data_source;
+
     @Inject
     private IContentRetrieverService
         __content_retriever_service;
