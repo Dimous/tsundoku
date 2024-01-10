@@ -180,7 +180,8 @@ public final class DefaultBookRepository implements IBookRepository {
                     __criteria_query = __criteria_builder.createQuery(BookEntity.class);
                 final Root<BookEntity>
                     __root = __criteria_query.from(BookEntity.class);
-
+                ///
+                ///
                 if (null != __consumer) {
                     __consumer.accept(
                         new ListConsumerDTO(__criteria_builder, __criteria_query, __root)
