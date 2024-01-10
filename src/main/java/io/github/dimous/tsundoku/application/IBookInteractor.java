@@ -6,6 +6,7 @@ import io.github.dimous.tsundoku.presentation.view.dto.AllDTO;
 import io.github.dimous.tsundoku.presentation.view.dto.DuplicatesDTO;
 import io.github.dimous.tsundoku.presentation.view.dto.IdenticalsDTO;
 
+import java.util.List;
 import java.util.function.Function;
 
 public interface IBookInteractor {
@@ -24,4 +25,6 @@ public interface IBookInteractor {
     void ingest(final Function<TraversedBookDTO, Boolean> __function_on_progress) throws Exception;
 
     String check(final String __string_path) throws Exception;
+
+    List<BookEntity> getMoreLikeThis(final BookEntity __book_entity, final int __int_limit, final int __int_min_doc_freq, final int __int_min_term_freq) throws Exception;
 }

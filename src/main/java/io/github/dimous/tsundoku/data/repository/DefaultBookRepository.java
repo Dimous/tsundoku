@@ -12,15 +12,22 @@ import io.github.dimous.tsundoku.domain.entity.NumberEntity;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.queries.mlt.MoreLikeThis;
+import org.apache.lucene.search.IndexSearcher;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JdbcSettings;
+import org.hibernate.search.backend.lucene.LuceneExtension;
 import org.hibernate.search.mapper.orm.Search;
 import org.hibernate.search.mapper.orm.scope.SearchScope;
 import org.hibernate.search.mapper.orm.session.SearchSession;
 
+import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -234,9 +241,46 @@ public final class DefaultBookRepository implements IBookRepository {
     }
     //---
 
-    // MoreLikeThisQuery напрямую -- https://docs.jboss.org/hibernate/stable/search/reference/en-US/html_single/#_retrieving_a_lucene_indexreader
-    // https://hibernate.atlassian.net/browse/HSEARCH-3272
-    // https://stackoverflow.com/a/70694647
+    public List<BookEntity> getMoreLikeThis(final ConfigEntity __config_entity, final BookEntity __book_entity, final int __int_limit, final int __int_min_doc_freq, final int __int_min_term_freq) {
+        final AtomicReference<List<BookEntity>>
+            __atomic_reference_result = new AtomicReference<>(List.of());
+        ///
+        ///
+        this.withSession(
+            __config_entity,
+            __session -> {
+                try (
+                    final IndexReader
+                        __index_reader = Search.mapping(__session.getEntityManagerFactory()).scope(BookEntity.class).extension(LuceneExtension.get()).openIndexReader()
+                ) {
+                    final MoreLikeThis
+                        __more_like_this = new MoreLikeThis(__index_reader);
+                    final IndexSearcher
+                        __index_searcher = new IndexSearcher(__index_reader);
+                    ///
+                    ///
+                    __more_like_this.setAnalyzer(
+                        new StandardAnalyzer()
+                    );
+                    __more_like_this.setMinDocFreq(__int_min_doc_freq);
+                    __more_like_this.setMinTermFreq(__int_min_term_freq);
+                    __more_like_this.setFieldNames(
+                        new String[]{
+                            "content"
+                        }
+                    );
+
+                    __atomic_reference_result.set(
+                        __session.byMultipleIds(BookEntity.class).multiLoad(Arrays.stream(__index_searcher.search(__more_like_this.like(Math.toIntExact(__book_entity.getId())), __int_limit).scoreDocs).mapToInt(__score_doc -> __score_doc.doc).boxed().collect(Collectors.toList()))
+                    );
+                } catch (final IOException __exception) {
+                    // __exception.printStackTrace();
+                }
+            }
+        );
+
+        return __atomic_reference_result.get();
+    }
     //---
 
     private void withSession(final ConfigEntity __config_entity, final Consumer<Session> __consumer) {
