@@ -262,13 +262,13 @@ public final class DefaultBookRepository implements IBookRepository {
                     __more_like_this.setAnalyzer(
                         new StandardAnalyzer()
                     );
-                    __more_like_this.setMinDocFreq(__int_min_doc_freq);
-                    __more_like_this.setMinTermFreq(__int_min_term_freq);
                     __more_like_this.setFieldNames(
                         new String[]{
                             "content"
                         }
                     );
+                    __more_like_this.setMinDocFreq(__int_min_doc_freq);
+                    __more_like_this.setMinTermFreq(__int_min_term_freq);
 
                     __atomic_reference_result.set(
                         __session.byMultipleIds(BookEntity.class).multiLoad(Arrays.stream(__index_searcher.search(__more_like_this.like(Math.toIntExact(__book_entity.getId())), __int_limit).scoreDocs).mapToInt(__score_doc -> __score_doc.doc).boxed().collect(Collectors.toList()))
