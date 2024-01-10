@@ -32,4 +32,6 @@ public interface IBookRepository {
     void ingest(final ConfigEntity __config_entity, final Function<TraversedBookDTO, Boolean> __function_on_progress);
 
     List<BookEntity> check(final ConfigEntity __config_entity, final Path __path);
+
+    List<BookEntity> getMoreLikeThis(final ConfigEntity __config_entity, final BookEntity __book_entity, final int __int_limit, final int __int_min_doc_freq, final int __int_min_term_freq);
 }

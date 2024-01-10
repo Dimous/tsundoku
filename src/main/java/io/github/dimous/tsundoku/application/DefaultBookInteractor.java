@@ -11,11 +11,12 @@ import io.github.dimous.tsundoku.presentation.view.dto.*;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TreeItem;
 
-import java.awt.*;
 import java.io.File;
+import java.awt.Desktop;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -157,5 +158,11 @@ public final class DefaultBookInteractor implements IBookInteractor {
     @Override
     public String check(final String __string_path) throws Exception {
         return Joiner.on(", ").join(this.__book_repository.check(this.__config_repository.read(), Path.of(__string_path)).stream().limit(5).map(BookEntity::getName).collect(Collectors.toList()));
+    }
+    //---
+
+    @Override
+    public List<BookEntity> getMoreLikeThis(final BookEntity __book_entity, final int __int_limit, final int __int_min_doc_freq, final int __int_min_term_freq) throws Exception {
+        return this.__book_repository.getMoreLikeThis(this.__config_repository.read(), __book_entity, __int_limit, __int_min_doc_freq, __int_min_term_freq);
     }
 }
