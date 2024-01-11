@@ -119,16 +119,14 @@ public final class AllController implements Initializable {
 
         this.__status_bar.textProperty().bindBidirectional(this.__all_state.status);
         this.__text_field_keyword.textProperty().bindBidirectional(this.__all_state.keyword);
+        this.__button_search.disableProperty().bindBidirectional(this.__all_state.is_in_progress);
+        this.__button_settings.disableProperty().bindBidirectional(this.__all_state.is_in_progress);
         this.__progress_indicator.visibleProperty().bindBidirectional(this.__all_state.is_in_progress);
+        this.__text_field_keyword.disableProperty().bindBidirectional(this.__all_state.is_in_progress);
         this.__toggle_button_ingest.selectedProperty().bindBidirectional(this.__all_state.is_ingesting);
 
         this.__all_state.is_in_progress.addListener(
-            (__observable_value, __boolean_old, __boolean_new) -> {
-                this.__button_search.setDisable(__boolean_new);
-                this.__button_settings.setDisable(__boolean_new);
-                this.__text_field_keyword.setDisable(__boolean_new);
-                this.__toggle_button_ingest.setDisable(__boolean_new && !this.__all_state.is_ingesting.get());
-            }
+            (__observable_value, __boolean_old, __boolean_new) -> this.__toggle_button_ingest.setDisable(__boolean_new && !this.__all_state.is_ingesting.get())
         );
         this.__all_state.tree_view_root.addListener(
             (__observable_value, __tree_item_old, __tree_item_new) -> {
