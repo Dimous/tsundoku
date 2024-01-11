@@ -52,7 +52,6 @@ public final class AllController implements Initializable {
 
     @FXML
     private Button
-        __button_index,
         __button_search,
         __button_settings;
 
@@ -64,10 +63,15 @@ public final class AllController implements Initializable {
     private ProgressIndicator
         __progress_indicator;
 
+    @FXML
+    private ToggleButton
+        __toggle_button_ingest;
+
     private final AllState
         __all_state = new AllState(
         new SimpleStringProperty(),
         new SimpleStringProperty(),
+        new SimpleBooleanProperty(),
         new SimpleBooleanProperty(),
         new SimpleObjectProperty<>()
     );
@@ -116,13 +120,14 @@ public final class AllController implements Initializable {
         this.__status_bar.textProperty().bindBidirectional(this.__all_state.status);
         this.__text_field_keyword.textProperty().bindBidirectional(this.__all_state.keyword);
         this.__progress_indicator.visibleProperty().bindBidirectional(this.__all_state.is_in_progress);
+        this.__toggle_button_ingest.selectedProperty().bindBidirectional(this.__all_state.is_ingesting);
 
         this.__all_state.is_in_progress.addListener(
             (__observable_value, __boolean_old, __boolean_new) -> {
-                this.__button_index.setDisable(__boolean_new);
                 this.__button_search.setDisable(__boolean_new);
                 this.__button_settings.setDisable(__boolean_new);
                 this.__text_field_keyword.setDisable(__boolean_new);
+                this.__toggle_button_ingest.setDisable(__boolean_new && !this.__all_state.is_ingesting.get());
             }
         );
         this.__all_state.tree_view_root.addListener(
@@ -140,7 +145,7 @@ public final class AllController implements Initializable {
     }
     //---
 
-    public void onIndexButtonClick() {
+    public void onIngestToggleButtonClick() {
         final Thread
             __thread;
         final Task<Void>
@@ -151,17 +156,19 @@ public final class AllController implements Initializable {
                     () -> __all_state.is_in_progress.set(true)
                 );
 
-                __book_interactor.ingest(
-                    __traversed_book_d_t_o -> {
-                        Platform.runLater(
-                            () -> __all_state.status.set(
-                                MessageFormat.format(__resource_bundle.getString("ui.status_bar.all_index"), __traversed_book_d_t_o.step(), __traversed_book_d_t_o.total())
-                            )
-                        );
+                if (__all_state.is_ingesting.get()) {
+                    __book_interactor.ingest(
+                        __traversed_book_d_t_o -> {
+                            Platform.runLater(
+                                () -> __all_state.status.set(
+                                    MessageFormat.format(__resource_bundle.getString("ui.status_bar.all_index"), __traversed_book_d_t_o.step(), __traversed_book_d_t_o.total())
+                                )
+                            );
 
-                        return false;
-                    }
-                );
+                            return !__all_state.is_ingesting.get();
+                        }
+                    );
+                }
 
                 return null;
             }
@@ -169,11 +176,17 @@ public final class AllController implements Initializable {
         ///
         ///
         __task.setOnFailed(
-            __worker_state_event -> this.__all_state.is_in_progress.set(false)
+            __worker_state_event -> {
+                this.__all_state.is_ingesting.set(false);
+                this.__all_state.is_in_progress.set(false);
+            }
         );
 
         __task.setOnSucceeded(
-            __worker_state_event -> this.__all_state.is_in_progress.set(false)
+            __worker_state_event -> {
+                this.__all_state.is_ingesting.set(false);
+                this.__all_state.is_in_progress.set(false);
+            }
         );
 
         __thread = new Thread(__task);
@@ -287,6 +300,7 @@ public final class AllController implements Initializable {
     private record AllState(
         SimpleStringProperty status,
         SimpleStringProperty keyword,
+        SimpleBooleanProperty is_ingesting,
         SimpleBooleanProperty is_in_progress,
         SimpleObjectProperty<TreeItem<AllTreeNodeDTO>> tree_view_root
     ) {

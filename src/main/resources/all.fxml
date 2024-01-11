@@ -11,7 +11,7 @@
             <Insets top="10" right="10" bottom="10" left="10"/>
         </padding>
 
-        <Button fx:id="__button_index" text="%ui.button.index" onAction="#onIndexButtonClick"/>
+        <ToggleButton fx:id="__toggle_button_ingest" text="%ui.button.index" onAction="#onIngestToggleButtonClick"/>
 
         <Separator orientation="VERTICAL"/>
 
