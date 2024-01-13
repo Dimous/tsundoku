@@ -1,5 +1,9 @@
 package io.github.dimous.tsundoku.data.repository;
 
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
+import com.google.common.cache.RemovalListener;
 import com.google.inject.Inject;
 import io.github.dimous.tsundoku.data.data_source.IBookDataSource;
 import io.github.dimous.tsundoku.data.data_source.IFileDataSource;
@@ -7,8 +11,8 @@ import io.github.dimous.tsundoku.data.dto.TraversedBookDTO;
 import io.github.dimous.tsundoku.data.service.IISBNRetrieverService;
 import io.github.dimous.tsundoku.domain.contract.IBookRepository;
 import io.github.dimous.tsundoku.domain.entity.BookEntity;
-import io.github.dimous.tsundoku.domain.entity.ConfigEntity;
 import io.github.dimous.tsundoku.domain.entity.NumberEntity;
+import io.github.dimous.tsundoku.domain.vo.ConfigVO;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
@@ -49,14 +53,18 @@ public final class DefaultBookRepository implements IBookRepository {
     private IISBNRetrieverService
         __i_s_b_n_retriever_service;
 
+    @Inject
+    private LoadingCache<ConfigVO, SessionFactory>
+        __loading_cache_session_factory;
+
     @Override
-    public Map<String, List<BookEntity>> getIdenticals(final ConfigEntity __config_entity) {
+    public Map<String, List<BookEntity>> getIdenticals(final ConfigVO __config_v_o) {
         final AtomicReference<Map<String, List<BookEntity>>>
             __atomic_reference_result = new AtomicReference<>(Map.of());
         ///
         ///
         this.withSession(
-            __config_entity,
+            __config_v_o,
             __session -> __atomic_reference_result.set(
                 __session.createSelectionQuery("FROM BookEntity WHERE hash IN (SELECT hash FROM BookEntity GROUP BY hash HAVING COUNT(hash) > 1) ORDER BY hash", BookEntity.class).getResultList().stream().collect(Collectors.groupingBy(BookEntity::getHash))
             )
@@ -67,13 +75,13 @@ public final class DefaultBookRepository implements IBookRepository {
     //---
 
     @Override
-    public Map<String, Set<BookEntity>> getDuplicates(final ConfigEntity __config_entity) {
+    public Map<String, Set<BookEntity>> getDuplicates(final ConfigVO __config_v_o) {
         final AtomicReference<Map<String, Set<BookEntity>>>
             __atomic_reference_result = new AtomicReference<>(Map.of());
         ///
         ///
         this.withSession(
-            __config_entity,
+            __config_v_o,
             __session -> __atomic_reference_result.set(
                 __session.createSelectionQuery("SELECT n FROM NumberEntity n JOIN n.books b GROUP BY n HAVING COUNT(b) > 1 ORDER BY n", NumberEntity.class).getResultList().stream().collect(Collectors.toMap(NumberEntity::getValue, NumberEntity::getBooks))
             )
@@ -84,18 +92,18 @@ public final class DefaultBookRepository implements IBookRepository {
     //---
 
     @Override
-    public long getTotal(final ConfigEntity __config_entity) {
-        return this.getTotal(__config_entity, null);
+    public long getTotal(final ConfigVO __config_v_o) {
+        return this.getTotal(__config_v_o, null);
     }
 
     @Override
-    public long getTotal(final ConfigEntity __config_entity, final Consumer<GetTotalConsumerDTO> __consumer) {
+    public long getTotal(final ConfigVO __config_v_o, final Consumer<GetTotalConsumerDTO> __consumer) {
         final AtomicReference<Long>
             __atomic_reference_result = new AtomicReference<>(0L);
         ///
         ///
         this.withSession(
-            __config_entity,
+            __config_v_o,
             __session -> {
                 final CriteriaBuilder
                     __criteria_builder = __session.getCriteriaBuilder();
@@ -124,9 +132,9 @@ public final class DefaultBookRepository implements IBookRepository {
     //---
 
     @Override
-    public void remove(final ConfigEntity __config_entity, final BookEntity __book_entity) {
+    public void remove(final ConfigVO __config_v_o, final BookEntity __book_entity) {
         this.withSession(
-            __config_entity,
+            __config_v_o,
             __session -> {
                 __session.remove(__book_entity);
 
@@ -139,14 +147,14 @@ public final class DefaultBookRepository implements IBookRepository {
     //---
 
     @Override
-    public void ingest(final ConfigEntity __config_entity, final Function<TraversedBookDTO, Boolean> __function_on_progress) {
+    public void ingest(final ConfigVO __config_v_o, final Function<TraversedBookDTO, Boolean> __function_on_progress) {
         this.__book_data_source.traverseFileSystem(
-            __config_entity.getBasePath(),
-            __config_entity.getExtensions(),
+            __config_v_o.getBasePath(),
+            __config_v_o.getExtensions(),
             __traversed_book_d_t_o -> {
                 // пакетный сброс сессии с gc не срабатывал, OOM на ~5600 элементе, покэтому -- сессия/элемент
                 this.withSession(
-                    __config_entity,
+                    __config_v_o,
                     __session -> __session.merge(
                         new BookEntity(__traversed_book_d_t_o.path(), __traversed_book_d_t_o.name(), __traversed_book_d_t_o.extension(), __traversed_book_d_t_o.size(), __traversed_book_d_t_o.hash(), this.__i_s_b_n_retriever_service.retrieve(__traversed_book_d_t_o.content()).stream().map(NumberEntity::new).collect(Collectors.toSet()), __traversed_book_d_t_o.content())
                     )
@@ -161,18 +169,18 @@ public final class DefaultBookRepository implements IBookRepository {
     //---
 
     @Override
-    public List<BookEntity> list(final ConfigEntity __config_entity, final int __int_offset, final int __int_limit) {
-        return this.list(__config_entity, __int_offset, __int_limit, null);
+    public List<BookEntity> list(final ConfigVO __config_v_o, final int __int_offset, final int __int_limit) {
+        return this.list(__config_v_o, __int_offset, __int_limit, null);
     }
 
     @Override
-    public List<BookEntity> list(final ConfigEntity __config_entity, final int __int_offset, final int __int_limit, final Consumer<ListConsumerDTO> __consumer) {
+    public List<BookEntity> list(final ConfigVO __config_v_o, final int __int_offset, final int __int_limit, final Consumer<ListConsumerDTO> __consumer) {
         final AtomicReference<List<BookEntity>>
             __atomic_reference_result = new AtomicReference<>(List.of());
         ///
         ///
         this.withSession(
-            __config_entity,
+            __config_v_o,
             __session -> {
                 final CriteriaBuilder
                     __criteria_builder = __session.getCriteriaBuilder();
@@ -199,13 +207,13 @@ public final class DefaultBookRepository implements IBookRepository {
     //---
 
     @Override
-    public List<BookEntity> search(final ConfigEntity __config_entity, final String __string_keyword) {
+    public List<BookEntity> search(final ConfigVO __config_v_o, final String __string_keyword) {
         final AtomicReference<List<BookEntity>>
             __atomic_reference_result = new AtomicReference<>(List.of());
         ///
         ///
         this.withSession(
-            __config_entity,
+            __config_v_o,
             __session -> {
                 final SearchSession
                     __search_session = Search.session(__session);
@@ -224,14 +232,14 @@ public final class DefaultBookRepository implements IBookRepository {
     //---
 
     @Override
-    public List<BookEntity> check(final ConfigEntity __config_entity, final Path __path) {
+    public List<BookEntity> check(final ConfigVO __config_v_o, final Path __path) {
         final AtomicReference<List<BookEntity>>
             __atomic_reference_result = new AtomicReference<>(List.of());
         ///
         ///
         this.__book_data_source.getBook(__path).ifPresent(
             __book_d_t_o -> this.withSession(
-                __config_entity,
+                __config_v_o,
                 __session -> __atomic_reference_result.set(
                     __session.createSelectionQuery("SELECT b FROM BookEntity b JOIN b.numbers n WHERE b.hash = :hash OR n.value IN (:numbers)", BookEntity.class).setParameter("hash", __book_d_t_o.hash()).setParameter("numbers", this.__i_s_b_n_retriever_service.retrieve(__book_d_t_o.content())).getResultList()
                 )
@@ -242,13 +250,13 @@ public final class DefaultBookRepository implements IBookRepository {
     }
     //---
 
-    public List<BookEntity> getMoreLikeThis(final ConfigEntity __config_entity, final BookEntity __book_entity, final int __int_limit, final int __int_min_doc_freq, final int __int_min_term_freq) {
+    public List<BookEntity> getMoreLikeThis(final ConfigVO __config_v_o, final BookEntity __book_entity, final int __int_limit, final int __int_min_doc_freq, final int __int_min_term_freq) {
         final AtomicReference<List<BookEntity>>
             __atomic_reference_result = new AtomicReference<>(List.of());
         ///
         ///
         this.withSession(
-            __config_entity,
+            __config_v_o,
             __session -> {
                 try (
                     final IndexReader
@@ -284,11 +292,12 @@ public final class DefaultBookRepository implements IBookRepository {
     }
     //---
 
-    private void withSession(final ConfigEntity __config_entity, final Consumer<Session> __consumer) {
-        try (
+    private void withSession(final ConfigVO __config_v_o, final Consumer<Session> __consumer) {
+        try {
             final SessionFactory
-                __session_factory = new Configuration().addAnnotatedClass(BookEntity.class).addAnnotatedClass(NumberEntity.class).setProperty(JdbcSettings.URL, __config_entity.getUrl()).setProperty(JdbcSettings.USER, __config_entity.getUser()).setProperty(JdbcSettings.PASS, __config_entity.getPassword()).setProperty(JdbcSettings.DIALECT, __config_entity.getDialect()).setProperty("hibernate.hbm2ddl.auto", "update").buildSessionFactory()
-        ) {
+                __session_factory = this.__loading_cache_session_factory.get(__config_v_o);
+            ///
+            ///
             __session_factory.getSchemaManager().exportMappedObjects(true);
 
             __session_factory.inTransaction(__consumer);

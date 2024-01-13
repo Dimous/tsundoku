@@ -3,7 +3,7 @@ package io.github.dimous.tsundoku.presentation.controller;
 import com.google.common.base.Joiner;
 import com.google.inject.Inject;
 import io.github.dimous.tsundoku.application.IConfigInteractor;
-import io.github.dimous.tsundoku.domain.entity.ConfigEntity;
+import io.github.dimous.tsundoku.domain.vo.ConfigVO;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.concurrent.Task;
@@ -62,7 +62,7 @@ public final class ConfigController implements Initializable {
             @Override
             protected Void call() {
                 __config_interactor.set(
-                    new ConfigEntity(__config_state.dialect.get(), __config_state.url.get(), __config_state.user.get(), __config_state.password.get(), __config_state.base_path.get(), __config_state.extensions.get())
+                    new ConfigVO(__config_state.dialect.get(), __config_state.url.get(), __config_state.user.get(), __config_state.password.get(), __config_state.base_path.get(), __config_state.extensions.get())
                 );
 
                 return null;
@@ -82,15 +82,15 @@ public final class ConfigController implements Initializable {
             @Override
             protected Void call() {
                 __config_interactor.get().ifPresent(
-                    __config_entity -> Platform.runLater(
+                    __config_v_o -> Platform.runLater(
                         () -> {
-                            __config_state.url.set(__config_entity.getUrl());
-                            __config_state.user.set(__config_entity.getUser());
-                            __config_state.dialect.set(__config_entity.getDialect());
-                            __config_state.password.set(__config_entity.getPassword());
-                            __config_state.base_path.set(__config_entity.getBasePath());
+                            __config_state.url.set(__config_v_o.getUrl());
+                            __config_state.user.set(__config_v_o.getUser());
+                            __config_state.dialect.set(__config_v_o.getDialect());
+                            __config_state.password.set(__config_v_o.getPassword());
+                            __config_state.base_path.set(__config_v_o.getBasePath());
                             __config_state.extensions.set(
-                                Joiner.on(", ").join(__config_entity.getExtensions())
+                                Joiner.on(", ").join(__config_v_o.getExtensions())
                             );
                         }
                     )

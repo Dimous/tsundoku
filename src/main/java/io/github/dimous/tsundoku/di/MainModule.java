@@ -1,7 +1,13 @@
 package io.github.dimous.tsundoku.di;
 
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
+import com.google.common.cache.RemovalListener;
 import com.google.inject.AbstractModule;
+import com.google.inject.Key;
 import com.google.inject.Scopes;
+import com.google.inject.TypeLiteral;
 import io.github.dimous.tsundoku.application.DefaultBookInteractor;
 import io.github.dimous.tsundoku.application.DefaultConfigInteractor;
 import io.github.dimous.tsundoku.application.IBookInteractor;
@@ -12,13 +18,23 @@ import io.github.dimous.tsundoku.data.repository.DefaultConfigRepository;
 import io.github.dimous.tsundoku.data.service.*;
 import io.github.dimous.tsundoku.domain.contract.IBookRepository;
 import io.github.dimous.tsundoku.domain.contract.IConfigRepository;
+import io.github.dimous.tsundoku.domain.entity.BookEntity;
+import io.github.dimous.tsundoku.domain.entity.NumberEntity;
+import io.github.dimous.tsundoku.domain.vo.ConfigVO;
 import io.github.dimous.tsundoku.presentation.view.Util;
 import io.github.dimous.tsundoku.presentation.view.control.DuplicatesTreeCell;
 import io.github.dimous.tsundoku.presentation.view.control.IdenticalsTreeCell;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.JdbcSettings;
 
 import java.util.ResourceBundle;
 
 public final class MainModule extends AbstractModule {
+    public final static Key<LoadingCache<ConfigVO, SessionFactory>>
+        SESSION_FACTORY_CACHE = new Key<>() {
+    };
+
     @Override
     protected void configure() {
         this.bind(IdenticalsTreeCell.class);
@@ -35,5 +51,32 @@ public final class MainModule extends AbstractModule {
         this.bind(IConfigInteractor.class).to(DefaultConfigInteractor.class).in(Scopes.SINGLETON);
         this.bind(IISBNRetrieverService.class).to(DefaultISBNRetrieverService.class).in(Scopes.SINGLETON);
         this.bind(IContentRetrieverService.class).to(TikaContentRetrieverService.class).in(Scopes.SINGLETON);
+        this.bind(
+            new TypeLiteral<LoadingCache<ConfigVO, SessionFactory>>() {
+            }
+        ).toInstance(
+            CacheBuilder
+                .newBuilder()
+                .maximumSize(1)
+                .removalListener(
+                    (RemovalListener<ConfigVO, SessionFactory>) __removal_notification -> {
+                        final SessionFactory
+                            __session_factory = __removal_notification.getValue();
+                        ///
+                        ///
+                        if (null != __session_factory) {
+                            __session_factory.close();
+                        }
+                    }
+                )
+                .build(
+                    new CacheLoader<ConfigVO, SessionFactory>() {
+                        @Override
+                        public SessionFactory load(final ConfigVO __config_v_o) {
+                            return new Configuration().addAnnotatedClass(BookEntity.class).addAnnotatedClass(NumberEntity.class).setProperty(JdbcSettings.URL, __config_v_o.getUrl()).setProperty(JdbcSettings.USER, __config_v_o.getUser()).setProperty(JdbcSettings.PASS, __config_v_o.getPassword()).setProperty(JdbcSettings.DIALECT, __config_v_o.getDialect()).setProperty("hibernate.hbm2ddl.auto", "update").buildSessionFactory();
+                        }
+                    }
+                )
+        );
     }
 }

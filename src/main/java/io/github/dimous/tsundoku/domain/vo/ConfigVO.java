@@ -1,4 +1,4 @@
-package io.github.dimous.tsundoku.domain.entity;
+package io.github.dimous.tsundoku.domain.vo;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Sets;
@@ -6,7 +6,7 @@ import com.google.common.collect.Sets;
 import java.util.Objects;
 import java.util.Set;
 
-public final class ConfigEntity {
+public final class ConfigVO {
     private Set<String>
         __set_extensions;
 
@@ -17,30 +17,17 @@ public final class ConfigEntity {
         __string_password,
         __string_base_path;
 
-    public ConfigEntity(final String __string_dialect, final String __string_url, final String __string_user, final String __string_password, final String __string_base_path, final String __string_extensions) {
+    public ConfigVO(final String __string_dialect, final String __string_url, final String __string_user, final String __string_password, final String __string_base_path, final String __string_extensions) {
         this(__string_dialect, __string_url, __string_user, __string_password, __string_base_path, Sets.newHashSet(Splitter.on(",").trimResults().split(__string_extensions)));
     }
 
-    public ConfigEntity(final String __string_dialect, final String __string_url, final String __string_user, final String __string_password, final String __string_base_path, final Set<String> __set_extensions) {
+    public ConfigVO(final String __string_dialect, final String __string_url, final String __string_user, final String __string_password, final String __string_base_path, final Set<String> __set_extensions) {
         this.setUrl(__string_url);
         this.setUser(__string_user);
         this.setDialect(__string_dialect);
         this.setPassword(__string_password);
         this.setBasePath(__string_base_path);
         this.setExtensions(__set_extensions);
-    }
-
-    public long getId() {
-        return 1;
-    }
-    //---
-
-    public Set<String> getExtensions() {
-        return this.__set_extensions;
-    }
-
-    public void setExtensions(final Set<String> __set_extensions) {
-        this.__set_extensions = __set_extensions;
     }
     //---
 
@@ -89,15 +76,35 @@ public final class ConfigEntity {
     }
     //---
 
+    public Set<String> getExtensions() {
+        return this.__set_extensions;
+    }
+
+    public void setExtensions(final Set<String> __set_extensions) {
+        this.__set_extensions = __set_extensions;
+    }
+    //---
+
     @Override
     public int hashCode() {
-        return Objects.hash(this.getId());
+        return Objects.hash(this.getUrl(), this.getUser(), this.getDialect(), this.getPassword(), this.getBasePath(), this.getExtensions());
     }
     //---
 
     @Override
     public boolean equals(final Object __object_target) {
-        return null != __object_target && (this == __object_target || __object_target instanceof ConfigEntity && Objects.equals(this.getId(), ((ConfigEntity) __object_target).getId()));
-    }
+        if (null == __object_target) {
+            return false;
+        }
 
+        if (this == __object_target) {
+            return true;
+        }
+
+        if (__object_target instanceof ConfigVO __config_v_o_target) {
+            return Objects.equals(this.getUrl(), __config_v_o_target.getUrl()) && Objects.equals(this.getUser(), __config_v_o_target.getUser()) && Objects.equals(this.getDialect(), __config_v_o_target.getDialect()) && Objects.equals(this.getPassword(), __config_v_o_target.getPassword()) && Objects.equals(this.getBasePath(), __config_v_o_target.getBasePath()) && Objects.equals(this.getExtensions(), __config_v_o_target.getExtensions());
+        }
+
+        return false;
+    }
 }

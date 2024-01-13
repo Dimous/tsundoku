@@ -1,11 +1,11 @@
 package io.github.dimous.tsundoku.application;
 
-import io.github.dimous.tsundoku.domain.entity.ConfigEntity;
+import io.github.dimous.tsundoku.domain.vo.ConfigVO;
 
 import java.util.Optional;
 
 public interface IConfigInteractor {
-    Optional<ConfigEntity> get();
+    Optional<ConfigVO> get();
 
-    void set(final ConfigEntity __config_entity);
+    void set(final ConfigVO __config_v_o);
 }

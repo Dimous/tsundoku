@@ -139,6 +139,7 @@ public final class AllController implements Initializable {
         );
 
         // todo вызывать реактивно на изменение данных в таблице Books
+        // https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html#events-events
         this.load();
     }
     //---

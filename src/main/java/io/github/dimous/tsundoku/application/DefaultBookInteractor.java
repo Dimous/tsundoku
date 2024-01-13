@@ -6,13 +6,13 @@ import io.github.dimous.tsundoku.data.dto.TraversedBookDTO;
 import io.github.dimous.tsundoku.domain.contract.IBookRepository;
 import io.github.dimous.tsundoku.domain.contract.IConfigRepository;
 import io.github.dimous.tsundoku.domain.entity.BookEntity;
-import io.github.dimous.tsundoku.domain.entity.ConfigEntity;
+import io.github.dimous.tsundoku.domain.vo.ConfigVO;
 import io.github.dimous.tsundoku.presentation.view.dto.*;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TreeItem;
 
+import java.awt.*;
 import java.io.File;
-import java.awt.Desktop;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -39,13 +39,13 @@ public final class DefaultBookInteractor implements IBookInteractor {
     public AllDTO getAll(final String __string_keyword) throws Exception {
         final TreeItem<AllTreeNodeDTO>
             __tree_item_root = new TreeItem<>(null);
-        final ConfigEntity
-            __config_entity = this.__config_repository.read();
+        final ConfigVO
+            __config_v_o = this.__config_repository.read();
         final int
-            __int_total = Math.toIntExact(this.__book_repository.getTotal(__config_entity));
+            __int_total = Math.toIntExact(this.__book_repository.getTotal(__config_v_o));
         ///
         ///
-        for (final BookEntity __book_entity : null == __string_keyword || __string_keyword.isEmpty() ? this.__book_repository.list(__config_entity, 0, __int_total) : this.__book_repository.search(__config_entity, __string_keyword)) {
+        for (final BookEntity __book_entity : null == __string_keyword || __string_keyword.isEmpty() ? this.__book_repository.list(__config_v_o, 0, __int_total) : this.__book_repository.search(__config_v_o, __string_keyword)) {
             TreeItem<AllTreeNodeDTO>
                 __tree_item_current = __tree_item_root;
             final Path
