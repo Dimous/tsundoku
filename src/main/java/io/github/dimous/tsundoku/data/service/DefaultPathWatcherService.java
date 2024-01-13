@@ -21,6 +21,10 @@ public class DefaultPathWatcherService implements IPathWatcherService {
 
         this.__thread = new Thread(
             () -> {
+                WatchKey
+                    __watch_key;
+                ///
+                ///
                 try (
                     final WatchService
                         __watch_service = FileSystems.getDefault().newWatchService()
@@ -28,10 +32,6 @@ public class DefaultPathWatcherService implements IPathWatcherService {
                     __path.register(__watch_service, __kinds);
 
                     while (true) {
-                        final WatchKey
-                            __watch_key;
-                        ///
-                        ///
                         try {
                             __watch_key = __watch_service.take();
                         } catch (final InterruptedException __exception) {
