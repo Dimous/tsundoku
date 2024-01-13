@@ -8,6 +8,8 @@ import java.util.Set;
 
 public interface IFileDataSource {
     boolean deleteFile(final String __string_path);
+
     FileDTO getFile(final Path __path) throws IOException;
+
     Path[] list(final String __string_root_path, final Set<String> __set_extensions);
 }
