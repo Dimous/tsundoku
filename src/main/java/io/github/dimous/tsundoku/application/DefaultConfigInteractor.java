@@ -6,7 +6,7 @@ import io.github.dimous.tsundoku.domain.vo.ConfigVO;
 
 import java.util.Optional;
 
-public class DefaultConfigInteractor implements IConfigInteractor {
+public final class DefaultConfigInteractor implements IConfigInteractor {
     @Inject
     private IConfigRepository
         __config_repository;

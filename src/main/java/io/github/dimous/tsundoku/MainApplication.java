@@ -1,11 +1,8 @@
 package io.github.dimous.tsundoku;
 
-import io.github.dimous.tsundoku.application.IResourceDisposerInteractor;
 import io.github.dimous.tsundoku.di.GuiceInjector;
-import io.github.dimous.tsundoku.di.MainModule;
 import io.github.dimous.tsundoku.presentation.view.Util;
 import javafx.application.Application;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -18,15 +15,6 @@ public final class MainApplication extends Application {
 
     @Override
     public void start(final Stage __stage) throws IOException {
-        __stage.setTitle("積ん読");
-        __stage.setOnCloseRequest(
-            __window_event -> {
-                GuiceInjector.getInjector().getInstance(IResourceDisposerInteractor.class).dispose();
-            }
-        );
-        __stage.setScene(
-            new Scene(GuiceInjector.getInjector().getInstance(Util.class).loadFXML("main"), 1024, 768)
-        );
-        __stage.show();
+        GuiceInjector.getInjector().getInstance(Util.class).start(__stage, "main", "積ん読", 1024, 768);
     }
 }
