@@ -1,9 +1,6 @@
 package io.github.dimous.tsundoku.data.repository;
 
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import com.google.common.cache.RemovalListener;
 import com.google.inject.Inject;
 import io.github.dimous.tsundoku.data.data_source.IBookDataSource;
 import io.github.dimous.tsundoku.data.data_source.IFileDataSource;
@@ -22,8 +19,6 @@ import org.apache.lucene.queries.mlt.MoreLikeThis;
 import org.apache.lucene.search.IndexSearcher;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.cfg.JdbcSettings;
 import org.hibernate.search.backend.lucene.LuceneExtension;
 import org.hibernate.search.mapper.orm.Search;
 import org.hibernate.search.mapper.orm.scope.SearchScope;
