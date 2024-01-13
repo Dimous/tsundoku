@@ -9,7 +9,7 @@ public class DefaultPathWatcherService implements IPathWatcherService {
 
     @Override
     public void stop() {
-        if (null != this.__thread && !this.__thread.isInterrupted()) {
+        if (null != this.__thread) {
             this.__thread.interrupt();
         }
     }
@@ -31,7 +31,7 @@ public class DefaultPathWatcherService implements IPathWatcherService {
                 ) {
                     __path.register(__watch_service, __kinds);
 
-                    while (true) {
+                    while (!this.__thread.isInterrupted()) {
                         try {
                             __watch_key = __watch_service.take();
                         } catch (final InterruptedException __exception) {
