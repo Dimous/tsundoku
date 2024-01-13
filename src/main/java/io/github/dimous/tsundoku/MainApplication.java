@@ -1,5 +1,6 @@
 package io.github.dimous.tsundoku;
 
+import io.github.dimous.tsundoku.application.IResourceDisposerInteractor;
 import io.github.dimous.tsundoku.di.GuiceInjector;
 import io.github.dimous.tsundoku.di.MainModule;
 import io.github.dimous.tsundoku.presentation.view.Util;
@@ -20,7 +21,7 @@ public final class MainApplication extends Application {
         __stage.setTitle("積ん読");
         __stage.setOnCloseRequest(
             __window_event -> {
-                GuiceInjector.getInjector().getInstance(MainModule.SESSION_FACTORY_CACHE).invalidateAll();
+                GuiceInjector.getInjector().getInstance(IResourceDisposerInteractor.class).dispose();
             }
         );
         __stage.setScene(

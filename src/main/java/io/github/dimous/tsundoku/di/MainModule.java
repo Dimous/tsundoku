@@ -8,10 +8,8 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Key;
 import com.google.inject.Scopes;
 import com.google.inject.TypeLiteral;
-import io.github.dimous.tsundoku.application.DefaultBookInteractor;
-import io.github.dimous.tsundoku.application.DefaultConfigInteractor;
-import io.github.dimous.tsundoku.application.IBookInteractor;
-import io.github.dimous.tsundoku.application.IConfigInteractor;
+import com.google.inject.name.Names;
+import io.github.dimous.tsundoku.application.*;
 import io.github.dimous.tsundoku.data.data_source.*;
 import io.github.dimous.tsundoku.data.repository.DefaultBookRepository;
 import io.github.dimous.tsundoku.data.repository.DefaultConfigRepository;
@@ -31,6 +29,9 @@ import org.hibernate.cfg.JdbcSettings;
 import java.util.ResourceBundle;
 
 public final class MainModule extends AbstractModule {
+    /**
+     * @deprecated для получения кеша напрямую
+     */
     public final static Key<LoadingCache<ConfigVO, SessionFactory>>
         SESSION_FACTORY_CACHE = new Key<>() {
     };
@@ -51,6 +52,8 @@ public final class MainModule extends AbstractModule {
         this.bind(IConfigInteractor.class).to(DefaultConfigInteractor.class).in(Scopes.SINGLETON);
         this.bind(IISBNRetrieverService.class).to(DefaultISBNRetrieverService.class).in(Scopes.SINGLETON);
         this.bind(IContentRetrieverService.class).to(TikaContentRetrieverService.class).in(Scopes.SINGLETON);
+        this.bind(IResourceDisposerInteractor.class).to(DefaultResourceDisposerInteractor.class).in(Scopes.SINGLETON);
+        this.bind(IPathWatcherService.class).annotatedWith(Names.named("config")).to(DefaultPathWatcherService.class).in(Scopes.SINGLETON);
         this.bind(
             new TypeLiteral<LoadingCache<ConfigVO, SessionFactory>>() {
             }
@@ -70,7 +73,7 @@ public final class MainModule extends AbstractModule {
                     }
                 )
                 .build(
-                    new CacheLoader<ConfigVO, SessionFactory>() {
+                    new CacheLoader<>() {
                         @Override
                         public SessionFactory load(final ConfigVO __config_v_o) {
                             return new Configuration().addAnnotatedClass(BookEntity.class).addAnnotatedClass(NumberEntity.class).setProperty(JdbcSettings.URL, __config_v_o.getUrl()).setProperty(JdbcSettings.USER, __config_v_o.getUser()).setProperty(JdbcSettings.PASS, __config_v_o.getPassword()).setProperty(JdbcSettings.DIALECT, __config_v_o.getDialect()).setProperty("hibernate.hbm2ddl.auto", "update").buildSessionFactory();

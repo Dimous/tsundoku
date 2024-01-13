@@ -294,7 +294,6 @@ public final class DefaultBookRepository implements IBookRepository {
             ///
             ///
             __session_factory.getSchemaManager().exportMappedObjects(true);
-
             __session_factory.inTransaction(__consumer);
         } catch (final Exception __exception) {
             // __exception.printStackTrace();

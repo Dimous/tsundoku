@@ -12,7 +12,13 @@ import java.util.Map;
 
 public final class INIConfigService implements IConfigService {
     private final File
-        __file = new File("settings.ini");
+        __file = new File(this.getDefaultSourceName());
+
+    @Override
+    public String getDefaultSourceName() {
+        return "settings.ini";
+    }
+    //---
 
     public Map<String, Map<String, String>> read() throws IOException {
         return this.read(this.__file);
