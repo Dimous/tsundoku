@@ -66,6 +66,6 @@ public final class NumberEntity {
 
     @Override
     public boolean equals(final Object __object_target) {
-        return null != __object_target && (this == __object_target || __object_target instanceof NumberEntity && Objects.equals(this.getValue(), ((NumberEntity) __object_target).getValue()));
+        return null != __object_target && (this == __object_target || __object_target instanceof NumberEntity __number_entity_target && Objects.equals(this.getValue(), __number_entity_target.getValue()));
     }
 }

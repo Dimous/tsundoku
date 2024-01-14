@@ -180,6 +180,6 @@ public final class BookEntity {
 
     @Override
     public boolean equals(final Object __object_target) {
-        return null != __object_target && (this == __object_target || __object_target instanceof BookEntity && Objects.equals(this.getId(), ((BookEntity) __object_target).getId()));
+        return null != __object_target && (this == __object_target || __object_target instanceof BookEntity __book_entity_target && Objects.equals(this.getId(), __book_entity_target.getId()));
     }
 }
