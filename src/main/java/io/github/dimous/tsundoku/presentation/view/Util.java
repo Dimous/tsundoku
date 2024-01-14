@@ -2,7 +2,7 @@ package io.github.dimous.tsundoku.presentation.view;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import io.github.dimous.tsundoku.application.IResourceDisposerInteractor;
+import io.github.dimous.tsundoku.application.IResourceInteractor;
 import io.github.dimous.tsundoku.domain.entity.BookEntity;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -36,14 +36,14 @@ public final class Util {
         __resource_bundle;
 
     @Inject
-    private IResourceDisposerInteractor
-        __resource_disposer_interactor;
+    private IResourceInteractor
+        __resource_interactor;
 
     public void start(final Stage __stage, final String __string_layout_name, final String __string_title, final double __double_width, final double __double_height) throws IOException {
         __stage.setTitle(__string_title);
         __stage.setOnCloseRequest(
             __window_event -> {
-                this.__resource_disposer_interactor.dispose();
+                this.__resource_interactor.dispose();
             }
         );
         __stage.setScene(

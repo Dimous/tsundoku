@@ -50,9 +50,9 @@ public final class MainModule extends AbstractModule {
         this.bind(IConfigRepository.class).to(DefaultConfigRepository.class).in(Scopes.SINGLETON);
         this.bind(IConfigDataSource.class).to(DefaultConfigDataSource.class).in(Scopes.SINGLETON);
         this.bind(IConfigInteractor.class).to(DefaultConfigInteractor.class).in(Scopes.SINGLETON);
+        this.bind(IResourceInteractor.class).to(DefaultResourceInteractor.class).in(Scopes.SINGLETON);
         this.bind(IISBNRetrieverService.class).to(DefaultISBNRetrieverService.class).in(Scopes.SINGLETON);
         this.bind(IContentRetrieverService.class).to(TikaContentRetrieverService.class).in(Scopes.SINGLETON);
-        this.bind(IResourceDisposerInteractor.class).to(DefaultResourceDisposerInteractor.class).in(Scopes.SINGLETON);
         this.bind(IPathWatcherService.class).annotatedWith(Names.named("config")).to(DefaultPathWatcherService.class).in(Scopes.SINGLETON);
         this.bind(
             new TypeLiteral<LoadingCache<ConfigVO, SessionFactory>>() {

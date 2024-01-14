@@ -7,7 +7,7 @@ import io.github.dimous.tsundoku.data.service.IPathWatcherService;
 import io.github.dimous.tsundoku.domain.vo.ConfigVO;
 import org.hibernate.SessionFactory;
 
-public final class DefaultResourceDisposerInteractor implements IResourceDisposerInteractor {
+public final class DefaultResourceInteractor implements IResourceInteractor {
     @Inject
     @Named("config")
     private IPathWatcherService
