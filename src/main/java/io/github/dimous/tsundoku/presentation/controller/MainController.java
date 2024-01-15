@@ -1,5 +1,6 @@
 package io.github.dimous.tsundoku.presentation.controller;
 
+import com.google.inject.Inject;
 import io.github.dimous.tsundoku.di.GuiceInjector;
 import io.github.dimous.tsundoku.presentation.view.Util;
 import javafx.fxml.FXML;
@@ -11,6 +12,10 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public final class MainController implements Initializable {
+    @Inject
+    private Util
+        __util;
+
     @FXML
     private Tab
         __tab_all;
@@ -33,7 +38,7 @@ public final class MainController implements Initializable {
         if (null == __tab.getContent()) {
             try {
                 __tab.setContent(
-                    GuiceInjector.getInjector().getInstance(Util.class).loadFXML((String) __tab.getUserData())
+                    this.__util.loadFXML((String) __tab.getUserData())
                 );
             } catch (final Exception __exception) {
                 // __exception.printStackTrace();
