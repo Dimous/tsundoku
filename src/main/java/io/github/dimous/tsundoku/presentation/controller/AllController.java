@@ -112,14 +112,14 @@ public final class AllController implements Initializable {
         );
 
         this.__tree_view.setShowRoot(false);
+        this.__tree_view.setCellFactory(
+            __tree_view -> this.__injector.getInstance(AllTreeCell.class)
+        );
         // https://github.com/cerebrosoft/treeview-dnd-example
         this.__tree_view.getSelectionModel().selectedItemProperty().addListener(
             (__observable_value, __tree_item_old, __tree_item_new) -> {
                 System.out.println(__tree_item_new.getValue().getBookEntity());
             }
-        );
-        this.__tree_view.setCellFactory(
-            __tree_view -> this.__injector.getInstance(AllTreeCell.class)
         );
 
         this.__status_bar.textProperty().bindBidirectional(this.__all_state.status);
