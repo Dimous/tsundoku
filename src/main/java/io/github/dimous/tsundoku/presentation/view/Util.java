@@ -42,9 +42,7 @@ public final class Util {
     public void start(final Stage __stage, final String __string_layout_name, final String __string_title, final double __double_width, final double __double_height) throws IOException {
         __stage.setTitle(__string_title);
         __stage.setOnCloseRequest(
-            __window_event -> {
-                this.__resource_interactor.dispose();
-            }
+            __window_event -> this.__resource_interactor.dispose()
         );
         __stage.setScene(
             new Scene(this.loadFXML(__string_layout_name), __double_width, __double_height)
