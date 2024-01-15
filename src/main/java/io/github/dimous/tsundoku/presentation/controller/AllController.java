@@ -1,6 +1,7 @@
 package io.github.dimous.tsundoku.presentation.controller;
 
 import com.google.inject.Inject;
+import com.google.inject.Injector;
 import io.github.dimous.tsundoku.application.IBookInteractor;
 import io.github.dimous.tsundoku.di.GuiceInjector;
 import io.github.dimous.tsundoku.presentation.view.Util;
@@ -29,6 +30,10 @@ public final class AllController implements Initializable {
     @Inject
     private Util
         __util;
+
+    @Inject
+    private Injector
+        __injector;
 
     @Inject
     private IBookInteractor
@@ -114,7 +119,7 @@ public final class AllController implements Initializable {
             }
         );
         this.__tree_view.setCellFactory(
-            __tree_view -> GuiceInjector.getInjector().getInstance(AllTreeCell.class)
+            __tree_view -> this.__injector.getInstance(AllTreeCell.class)
         );
 
         this.__status_bar.textProperty().bindBidirectional(this.__all_state.status);

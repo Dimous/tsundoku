@@ -1,6 +1,7 @@
 package io.github.dimous.tsundoku.presentation.controller;
 
 import com.google.inject.Inject;
+import com.google.inject.Injector;
 import io.github.dimous.tsundoku.application.IBookInteractor;
 import io.github.dimous.tsundoku.di.GuiceInjector;
 import io.github.dimous.tsundoku.domain.entity.BookEntity;
@@ -24,6 +25,10 @@ public final class IdenticalsController implements Initializable {
     @Inject
     private Util
         __util;
+
+    @Inject
+    private Injector
+        __injector;
 
     @Inject
     private IBookInteractor
@@ -52,7 +57,7 @@ public final class IdenticalsController implements Initializable {
         this.__tree_view.setUserData(this);
         this.__tree_view.setShowRoot(false);
         this.__tree_view.setCellFactory(
-            __tree_view -> GuiceInjector.getInjector().getInstance(IdenticalsTreeCell.class)
+            __tree_view -> this.__injector.getInstance(IdenticalsTreeCell.class)
         );
 
         this.__progress_indicator.visibleProperty().bindBidirectional(this.__identicals_state.is_in_progress);
