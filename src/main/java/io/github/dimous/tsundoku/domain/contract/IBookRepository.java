@@ -33,5 +33,5 @@ public interface IBookRepository {
 
     List<BookEntity> check(final ConfigVO __config_v_o, final Path __path);
 
-    List<BookEntity> getMoreLikeThis(final ConfigVO __config_v_o, final BookEntity __book_entity, final int __int_limit, final int __int_min_doc_freq, final int __int_min_term_freq);
+    List<BookEntity> getMoreLikeThis(final ConfigVO __config_v_o, final BookEntity __book_entity, final int __int_limit, final int __int_min_doc_freq, final int __int_min_term_freq, final int __int_min_word_len, final Set<?> __set_stop_words);
 }

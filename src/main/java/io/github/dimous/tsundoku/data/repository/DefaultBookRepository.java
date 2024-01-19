@@ -245,7 +245,7 @@ public final class DefaultBookRepository implements IBookRepository {
     }
     //---
 
-    public List<BookEntity> getMoreLikeThis(final ConfigVO __config_v_o, final BookEntity __book_entity, final int __int_limit, final int __int_min_doc_freq, final int __int_min_term_freq) {
+    public List<BookEntity> getMoreLikeThis(final ConfigVO __config_v_o, final BookEntity __book_entity, final int __int_limit, final int __int_min_doc_freq, final int __int_min_term_freq, final int __int_min_word_len, final Set<?> __set_stop_words) {
         final AtomicReference<List<BookEntity>>
             __atomic_reference_result = new AtomicReference<>(List.of());
         ///
@@ -271,6 +271,8 @@ public final class DefaultBookRepository implements IBookRepository {
                             "content"
                         }
                     );
+                    __more_like_this.setStopWords(__set_stop_words);
+                    __more_like_this.setMinWordLen(__int_min_word_len);
                     __more_like_this.setMinDocFreq(__int_min_doc_freq);
                     __more_like_this.setMinTermFreq(__int_min_term_freq);
 

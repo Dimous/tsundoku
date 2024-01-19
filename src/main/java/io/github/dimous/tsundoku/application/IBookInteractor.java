@@ -7,6 +7,7 @@ import io.github.dimous.tsundoku.presentation.view.dto.DuplicatesDTO;
 import io.github.dimous.tsundoku.presentation.view.dto.IdenticalsDTO;
 
 import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
 
 public interface IBookInteractor {
@@ -26,5 +27,5 @@ public interface IBookInteractor {
 
     String check(final String __string_path) throws Exception;
 
-    List<BookEntity> getMoreLikeThis(final BookEntity __book_entity, final int __int_limit, final int __int_min_doc_freq, final int __int_min_term_freq) throws Exception;
+    List<BookEntity> getMoreLikeThis(final BookEntity __book_entity, final int __int_limit, final int __int_min_doc_freq, final int __int_min_term_freq, final int __int_min_word_len, final Set<?> __set_stop_words) throws Exception;
 }

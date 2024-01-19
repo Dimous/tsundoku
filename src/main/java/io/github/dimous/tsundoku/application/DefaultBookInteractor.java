@@ -18,6 +18,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -162,7 +163,7 @@ public final class DefaultBookInteractor implements IBookInteractor {
     //---
 
     @Override
-    public List<BookEntity> getMoreLikeThis(final BookEntity __book_entity, final int __int_limit, final int __int_min_doc_freq, final int __int_min_term_freq) throws Exception {
-        return this.__book_repository.getMoreLikeThis(this.__config_repository.read(), __book_entity, __int_limit, __int_min_doc_freq, __int_min_term_freq);
+    public List<BookEntity> getMoreLikeThis(final BookEntity __book_entity, final int __int_limit, final int __int_min_doc_freq, final int __int_min_term_freq, final int __int_min_word_length, final Set<?> __set_stop_words) throws Exception {
+        return this.__book_repository.getMoreLikeThis(this.__config_repository.read(), __book_entity, __int_limit, __int_min_doc_freq, __int_min_term_freq, __int_min_word_length, __set_stop_words);
     }
 }
