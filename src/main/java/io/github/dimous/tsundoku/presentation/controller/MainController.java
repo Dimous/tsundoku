@@ -1,7 +1,6 @@
 package io.github.dimous.tsundoku.presentation.controller;
 
 import com.google.inject.Inject;
-import io.github.dimous.tsundoku.di.GuiceInjector;
 import io.github.dimous.tsundoku.presentation.view.Util;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

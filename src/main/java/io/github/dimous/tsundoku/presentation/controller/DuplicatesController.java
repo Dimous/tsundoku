@@ -3,7 +3,6 @@ package io.github.dimous.tsundoku.presentation.controller;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import io.github.dimous.tsundoku.application.IBookInteractor;
-import io.github.dimous.tsundoku.di.GuiceInjector;
 import io.github.dimous.tsundoku.domain.entity.BookEntity;
 import io.github.dimous.tsundoku.presentation.view.Util;
 import io.github.dimous.tsundoku.presentation.view.control.DuplicatesTreeCell;
