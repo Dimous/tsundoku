@@ -3,6 +3,7 @@ package io.github.dimous.tsundoku.presentation.controller;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import io.github.dimous.tsundoku.application.IBookInteractor;
+import io.github.dimous.tsundoku.domain.entity.BookEntity;
 import io.github.dimous.tsundoku.presentation.view.Util;
 import io.github.dimous.tsundoku.presentation.view.control.AllTreeCell;
 import io.github.dimous.tsundoku.presentation.view.dto.AllDTO;
@@ -110,6 +111,7 @@ public final class AllController implements Initializable {
             }
         );
 
+        this.__tree_view.setUserData(this);
         this.__tree_view.setShowRoot(false);
         this.__tree_view.setCellFactory(
             __tree_view -> this.__injector.getInstance(AllTreeCell.class)
@@ -117,7 +119,7 @@ public final class AllController implements Initializable {
         // https://github.com/cerebrosoft/treeview-dnd-example
         this.__tree_view.getSelectionModel().selectedItemProperty().addListener(
             (__observable_value, __tree_item_old, __tree_item_new) -> {
-                System.out.println(__tree_item_new.getValue().getBookEntity());
+                // System.out.println(__tree_item_new.getValue().getBookEntity());
             }
         );
 
@@ -205,6 +207,28 @@ public final class AllController implements Initializable {
 
     public void onSettingsButtonClick() {
         this.__util.showModal("config", this.__resource_bundle.getString("ui.button.settings"), 300, 300);
+    }
+    //---
+
+    public void onOpen(final BookEntity __book_entity) {
+        this.__book_interactor.open(__book_entity);
+    }
+    //---
+
+    public void onDelete(final BookEntity __book_entity) {
+        this.__util.showAlert(Alert.AlertType.CONFIRMATION, this.__resource_bundle.getString("ui.alert.removal_confirmation_title"), this.__resource_bundle.getString("ui.alert.removal_confirmation_header"), MessageFormat.format(this.__resource_bundle.getString("ui.alert.removal_confirmation_content"), __book_entity.getName())).ifPresent(
+            __button_type -> {
+                if (ButtonType.OK == __button_type) {
+                    try {
+                        this.__book_interactor.remove(__book_entity);
+                    } catch (final Exception __exception) {
+                        // __exception.printStackTrace();
+                    }
+
+                    this.load(this.__all_state.keyword.get());
+                }
+            }
+        );
     }
     //---
 
