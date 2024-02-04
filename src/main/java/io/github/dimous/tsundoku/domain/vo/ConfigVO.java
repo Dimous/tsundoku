@@ -13,17 +13,19 @@ public final class ConfigVO {
     private String
         __string_url,
         __string_user,
+        __string_driver,
         __string_dialect,
         __string_password,
         __string_base_path;
 
-    public ConfigVO(final String __string_dialect, final String __string_url, final String __string_user, final String __string_password, final String __string_base_path, final String __string_extensions) {
-        this(__string_dialect, __string_url, __string_user, __string_password, __string_base_path, Sets.newHashSet(Splitter.on(",").trimResults().split(__string_extensions)));
+    public ConfigVO(final String __string_driver, final String __string_dialect, final String __string_url, final String __string_user, final String __string_password, final String __string_base_path, final String __string_extensions) {
+        this(__string_driver, __string_dialect, __string_url, __string_user, __string_password, __string_base_path, Sets.newHashSet(Splitter.on(",").trimResults().split(__string_extensions)));
     }
 
-    public ConfigVO(final String __string_dialect, final String __string_url, final String __string_user, final String __string_password, final String __string_base_path, final Set<String> __set_extensions) {
+    public ConfigVO(final String __string_driver, final String __string_dialect, final String __string_url, final String __string_user, final String __string_password, final String __string_base_path, final Set<String> __set_extensions) {
         this.setUrl(__string_url);
         this.setUser(__string_user);
+        this.setDriver(__string_driver);
         this.setDialect(__string_dialect);
         this.setPassword(__string_password);
         this.setBasePath(__string_base_path);
@@ -46,6 +48,15 @@ public final class ConfigVO {
 
     public void setUser(final String __string_user) {
         this.__string_user = __string_user;
+    }
+    //---
+
+    public String getDriver() {
+        return __string_driver;
+    }
+
+    public void setDriver(final String __string_driver) {
+        this.__string_driver = __string_driver;
     }
     //---
 
@@ -87,7 +98,7 @@ public final class ConfigVO {
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.getUrl(), this.getUser(), this.getDialect(), this.getPassword(), this.getBasePath(), this.getExtensions());
+        return Objects.hash(this.getUrl(), this.getUser(), this.getDriver(), this.getDialect(), this.getPassword(), this.getBasePath(), this.getExtensions());
     }
     //---
 
@@ -102,7 +113,7 @@ public final class ConfigVO {
         }
 
         if (__object_target instanceof ConfigVO __config_v_o_target) {
-            return Objects.equals(this.getUrl(), __config_v_o_target.getUrl()) && Objects.equals(this.getUser(), __config_v_o_target.getUser()) && Objects.equals(this.getDialect(), __config_v_o_target.getDialect()) && Objects.equals(this.getPassword(), __config_v_o_target.getPassword()) && Objects.equals(this.getBasePath(), __config_v_o_target.getBasePath()) && Objects.equals(this.getExtensions(), __config_v_o_target.getExtensions());
+            return Objects.equals(this.getUrl(), __config_v_o_target.getUrl()) && Objects.equals(this.getUser(), __config_v_o_target.getUser()) && Objects.equals(this.getDriver(), __config_v_o_target.getDriver()) && Objects.equals(this.getDialect(), __config_v_o_target.getDialect()) && Objects.equals(this.getPassword(), __config_v_o_target.getPassword()) && Objects.equals(this.getBasePath(), __config_v_o_target.getBasePath()) && Objects.equals(this.getExtensions(), __config_v_o_target.getExtensions());
         }
 
         return false;

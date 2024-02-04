@@ -206,7 +206,7 @@ public final class AllController implements Initializable {
     //---
 
     public void onSettingsButtonClick() {
-        this.__util.showModal("config", this.__resource_bundle.getString("ui.button.settings"), 300, 300);
+        this.__util.showModal("config", this.__resource_bundle.getString("ui.button.settings"), 300, 350);
     }
     //---
 

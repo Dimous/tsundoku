@@ -236,7 +236,7 @@ public final class DefaultBookRepository implements IBookRepository {
             __book_d_t_o -> this.withSession(
                 __config_v_o,
                 __session -> __atomic_reference_result.set(
-                    __session.createSelectionQuery("SELECT b FROM BookEntity b JOIN b.numbers n WHERE b.hash = :hash OR n.value IN (:numbers)", BookEntity.class).setParameter("hash", __book_d_t_o.hash()).setParameter("numbers", this.__i_s_b_n_retriever_service.retrieve(__book_d_t_o.content())).getResultList()
+                    __session.createSelectionQuery("SELECT b FROM BookEntity b JOIN b.numbers n WHERE b.hash = :hash OR n.value IN (:numbers)", BookEntity.class).setParameter("hash", __book_d_t_o.hash()).setParameterList("numbers", this.__i_s_b_n_retriever_service.retrieve(__book_d_t_o.content())).getResultList()
                 )
             )
         );

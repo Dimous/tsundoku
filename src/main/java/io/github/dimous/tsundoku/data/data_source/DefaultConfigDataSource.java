@@ -47,7 +47,7 @@ public final class DefaultConfigDataSource implements IConfigDataSource {
     //---
 
     public void write(final ConfigDTO __config_d_t_o) throws Exception {
-        this.__config_service.write(Map.of("file-system", Map.of("base_path", __config_d_t_o.base_path(), "extensions", __config_d_t_o.extensions()), "database", Map.of("dialect", __config_d_t_o.dialect(), "url", __config_d_t_o.url(), "user", __config_d_t_o.user(), "password", __config_d_t_o.password())));
+        this.__config_service.write(Map.of("file-system", Map.of("base_path", __config_d_t_o.base_path(), "extensions", __config_d_t_o.extensions()), "database", Map.of("driver", __config_d_t_o.driver(), "dialect", __config_d_t_o.dialect(), "url", __config_d_t_o.url(), "user", __config_d_t_o.user(), "password", __config_d_t_o.password())));
     }
     //---
 
@@ -60,6 +60,6 @@ public final class DefaultConfigDataSource implements IConfigDataSource {
             __map_file_system = __map_config.get("file-system");
         ///
         ///
-        return new ConfigDTO(__map_database.get("dialect"), __map_database.get("url"), __map_database.get("user"), __map_database.get("password"), __map_file_system.get("base_path"), __map_file_system.get("extensions"));
+        return new ConfigDTO(__map_database.get("driver"), __map_database.get("dialect"), __map_database.get("url"), __map_database.get("user"), __map_database.get("password"), __map_file_system.get("base_path"), __map_file_system.get("extensions"));
     }
 }

@@ -25,6 +25,7 @@ import io.github.dimous.tsundoku.presentation.view.control.IdenticalsTreeCell;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JdbcSettings;
+import org.hibernate.cfg.SchemaToolingSettings;
 
 import java.util.ResourceBundle;
 
@@ -76,7 +77,7 @@ public final class MainModule extends AbstractModule {
                     new CacheLoader<>() {
                         @Override
                         public SessionFactory load(final ConfigVO __config_v_o) {
-                            return new Configuration().addAnnotatedClass(BookEntity.class).addAnnotatedClass(NumberEntity.class).setProperty(JdbcSettings.URL, __config_v_o.getUrl()).setProperty(JdbcSettings.USER, __config_v_o.getUser()).setProperty(JdbcSettings.PASS, __config_v_o.getPassword()).setProperty(JdbcSettings.DIALECT, __config_v_o.getDialect()).setProperty("hibernate.hbm2ddl.auto", "update").buildSessionFactory();
+                            return new Configuration().addAnnotatedClass(BookEntity.class).addAnnotatedClass(NumberEntity.class).setProperty(JdbcSettings.URL, __config_v_o.getUrl()).setProperty(JdbcSettings.USER, __config_v_o.getUser()).setProperty(JdbcSettings.PASS, __config_v_o.getPassword()).setProperty(JdbcSettings.DRIVER, __config_v_o.getDriver()).setProperty(JdbcSettings.DIALECT, __config_v_o.getDialect()).setProperty(SchemaToolingSettings.HBM2DDL_AUTO, "create").setProperty(JdbcSettings.SHOW_SQL, "true").setProperty(JdbcSettings.FORMAT_SQL, "true").setProperty(JdbcSettings.USE_SQL_COMMENTS, "true").buildSessionFactory();
                         }
                     }
                 )

@@ -7,13 +7,6 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(
-    uniqueConstraints = {
-        @UniqueConstraint(
-            columnNames = {"value", "book_id"}
-        )
-    }
-)
 public final class NumberEntity {
     private String
         __string_value;

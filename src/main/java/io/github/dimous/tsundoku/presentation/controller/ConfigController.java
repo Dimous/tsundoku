@@ -28,6 +28,7 @@ public final class ConfigController implements Initializable {
     private TextField
         __text_field_url,
         __text_field_user,
+        __text_field_driver,
         __text_field_dialect,
         __text_field_password,
         __text_field_base_path,
@@ -40,6 +41,7 @@ public final class ConfigController implements Initializable {
         new SimpleStringProperty(),
         new SimpleStringProperty(),
         new SimpleStringProperty(),
+        new SimpleStringProperty(),
         new SimpleStringProperty()
     );
 
@@ -47,6 +49,7 @@ public final class ConfigController implements Initializable {
     public void initialize(final URL __u_r_l, final ResourceBundle __resource_bundle) {
         this.__text_field_url.textProperty().bindBidirectional(this.__config_state.url);
         this.__text_field_user.textProperty().bindBidirectional(this.__config_state.user);
+        this.__text_field_driver.textProperty().bindBidirectional(this.__config_state.driver);
         this.__text_field_dialect.textProperty().bindBidirectional(this.__config_state.dialect);
         this.__text_field_password.textProperty().bindBidirectional(this.__config_state.password);
         this.__text_field_base_path.textProperty().bindBidirectional(this.__config_state.base_path);
@@ -62,7 +65,7 @@ public final class ConfigController implements Initializable {
             @Override
             protected Void call() {
                 __config_interactor.set(
-                    new ConfigVO(__config_state.dialect.get(), __config_state.url.get(), __config_state.user.get(), __config_state.password.get(), __config_state.base_path.get(), __config_state.extensions.get())
+                    new ConfigVO(__config_state.driver.get(), __config_state.dialect.get(), __config_state.url.get(), __config_state.user.get(), __config_state.password.get(), __config_state.base_path.get(), __config_state.extensions.get())
                 );
 
                 return null;
@@ -86,6 +89,7 @@ public final class ConfigController implements Initializable {
                         () -> {
                             __config_state.url.set(__config_v_o.getUrl());
                             __config_state.user.set(__config_v_o.getUser());
+                            __config_state.driver.set(__config_v_o.getDriver());
                             __config_state.dialect.set(__config_v_o.getDialect());
                             __config_state.password.set(__config_v_o.getPassword());
                             __config_state.base_path.set(__config_v_o.getBasePath());
@@ -110,6 +114,7 @@ public final class ConfigController implements Initializable {
     private record ConfigState(
         SimpleStringProperty url,
         SimpleStringProperty user,
+        SimpleStringProperty driver,
         SimpleStringProperty dialect,
         SimpleStringProperty password,
         SimpleStringProperty base_path,

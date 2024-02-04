@@ -12,6 +12,7 @@
         <Insets top="10" right="10" bottom="10" left="10"/>
     </padding>
 
+    <TextField fx:id="__text_field_driver" promptText="%ui.prompt.driver"/>
     <TextField fx:id="__text_field_dialect" promptText="%ui.prompt.dialect"/>
     <TextField fx:id="__text_field_url" promptText="%ui.prompt.url"/>
     <TextField fx:id="__text_field_user" promptText="%ui.prompt.user"/>
