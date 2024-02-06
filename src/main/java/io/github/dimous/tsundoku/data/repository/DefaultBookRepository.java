@@ -277,7 +277,7 @@ public final class DefaultBookRepository implements IBookRepository {
                     __more_like_this.setMinTermFreq(__int_min_term_freq);
 
                     __atomic_reference_result.set(
-                        __session.byMultipleIds(BookEntity.class).multiLoad(Arrays.stream(__index_searcher.search(__more_like_this.like(Math.toIntExact(__book_entity.getId())), __int_limit).scoreDocs).mapToInt(__score_doc -> __score_doc.doc).boxed().collect(Collectors.toList()))
+                        __session.byMultipleIds(BookEntity.class).multiLoad(Arrays.stream(__index_searcher.search(__more_like_this.like(Math.toIntExact(__book_entity.getId())), __int_limit).scoreDocs).mapToInt(__score_doc -> __score_doc.doc).filter(__int_id -> __int_id != __book_entity.getId()).boxed().collect(Collectors.toList()))
                     );
                 } catch (final IOException __exception) {
                     // __exception.printStackTrace();
