@@ -4,7 +4,7 @@
 <?import javafx.scene.control.TabPane?>
 <TabPane xmlns:fx="http://javafx.com/fxml"
          fx:controller="io.github.dimous.tsundoku.presentation.controller.MainController" fx:id="__tab_pane_root">
-    <Tab fx:id="__tab_all" text="%ui.tab.all" closable="false" userData="all"/>
+    <Tab text="%ui.tab.all" closable="false" userData="all"/>
     <Tab text="%ui.tab.identicals" closable="false" userData="identicals"/>
     <Tab text="%ui.tab.duplicates" closable="false" userData="duplicates"/>
 </TabPane>

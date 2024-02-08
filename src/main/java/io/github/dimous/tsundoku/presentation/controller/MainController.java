@@ -2,6 +2,7 @@ package io.github.dimous.tsundoku.presentation.controller;
 
 import com.google.inject.Inject;
 import io.github.dimous.tsundoku.presentation.view.Util;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Tab;
@@ -16,10 +17,6 @@ public final class MainController implements Initializable {
         __util;
 
     @FXML
-    private Tab
-        __tab_all;
-
-    @FXML
     private TabPane
         __tab_pane_root;
 
@@ -29,7 +26,7 @@ public final class MainController implements Initializable {
             (__observable_value, __tab_old, __tab_new) -> this.loadTabContent(__tab_new)
         );
 
-        this.loadTabContent(this.__tab_all);
+        this.loadTabContent(this.__tab_pane_root.getTabs().getFirst());
     }
     //---
 
